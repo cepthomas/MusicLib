@@ -17,6 +17,7 @@ using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using Ephemera.NBagOfTricks;
 using Ephemera.NBagOfUis;
+using Ephemera.NBagOfTricks.PNUT;
 
 
 namespace Ephemera.MusicLib.Test
@@ -29,6 +30,9 @@ namespace Ephemera.MusicLib.Test
         const string INFO = "INF";
         #endregion
 
+        /// <summary>Where to put things.</summary>
+        readonly string _outPath = "???";
+
         #region Lifecycle
         /// <summary>
         /// Constructor.
@@ -36,6 +40,11 @@ namespace Ephemera.MusicLib.Test
         public MainForm()
         {
             InitializeComponent();
+
+            // Make sure out path exists.
+            _outPath = Path.Join(MiscUtils.GetSourcePath(), "out");
+            DirectoryInfo di = new(_outPath);
+            di.Create();
 
             // The text output.
             txtViewer.Font = new Font("Cascadia Code", 9);
@@ -84,7 +93,9 @@ namespace Ephemera.MusicLib.Test
         {
             Tell(INFO, $">>>>> One.");
 
-            TestDefFile();
+            //TestDefFile();
+
+            //TestMusicDefs();
         }
 
         void Two_Click(object sender, EventArgs e)
@@ -110,15 +121,20 @@ namespace Ephemera.MusicLib.Test
             });
 
             Tell(INFO, $">>>>> Gen Markdown.");
-            var smd = MusicDefs.GenMarkdown(fn);
-            File.WriteAllText(@"C:\Dev\Libs\MusicLib\Test\musicdefs.md", smd);
-            // Tell(INFO, $"Markdown:{smd.Left(400)}");
+            var smd = MusicDefs.Instance.GenMarkdown(fn);
+            File.WriteAllText(Path.Join(_outPath, "musicdefs.md"), smd);
 
             Tell(INFO, $">>>>> Gen Lua.");
-            var sld = MusicDefs.GenLua(fn);
-            File.WriteAllText(@"C:\Dev\Libs\MusicLib\Test\musicdefs.lua", sld);
-            // Tell(INFO, $"Lua:{sld.Left(400)}");
+            var sld = MusicDefs.Instance.GenLua(fn);
+            File.WriteAllText(Path.Join(_outPath, "musicdefs.lua"), sld);
         }
+
+
+        // //-------------------------------------------------------------------------------//
+        // /// <summary>Test note functions.</summary>
+        // void TestMusicDefs()
+        // {
+        // }
 
         #region Misc internals
         /// <summary>Tell me something good.</summary>
@@ -129,5 +145,68 @@ namespace Ephemera.MusicLib.Test
             txtViewer.AppendLine($"{cat} {fn}({line}) {s}");
         }
         #endregion
+    }
+
+    //-------------------------------------------------------------------------------//
+    public class MUSICLIB_FILE : TestSuite
+    {
+        public override void RunSuite()
+        {
+            // Tell(INFO, $">>>>> Low level loading.");
+            string fn = Path.Combine(AppContext.BaseDirectory, "music_defs.ini");
+
+            // key is section name, value is line
+            Dictionary<string, List<string>> res = [];
+            var ir = new IniReader(fn);
+
+            // ir.Contents.ForEach(ic =>
+            // {
+            //     Tell(INFO, $"section:{ic.Key} => {ic.Value.Values.Count}");
+            // });
+
+            // Tell(INFO, $">>>>> Gen Markdown.");
+            var smd = MusicDefs.Instance.GenMarkdown(fn);
+            //File.WriteAllText(Path.Join(_outPath, "musicdefs.md"), smd);
+
+            // Tell(INFO, $">>>>> Gen Lua.");
+            var sld = MusicDefs.Instance.GenLua(fn);
+            //File.WriteAllText(Path.Join(_outPath, "musicdefs.lua"), sld);
+        }
+    }
+
+    //-------------------------------------------------------------------------------//
+    public class MUSICLIB_API : TestSuite
+    {
+        public override void RunSuite()
+        {
+            var md = MusicDefs.Instance;
+
+            //List<int> notes = [1, 2, 3];
+            UT_FALSE(md.IsNatural(3));
+            UT_TRUE(md.IsNatural(4));
+            UT_TRUE(md.IsNatural(5));
+            UT_FALSE(md.IsNatural(-1));
+            UT_TRUE(md.IsNatural(333));
+            UT_EQUAL(md.GetInterval("2"), 2);
+            UT_EQUAL(md.GetInterval("b5"), 6);
+            UT_EQUAL(md.GetInterval("#11"), 18);
+            UT_EQUAL(md.GetInterval("xxx"), -1);
+            UT_EQUAL(md.GetNotesFromString("Db.7#9").Count, 5);
+            UT_EQUAL(md.GetNotesFromString("booga").Count, 0);
+            UT_EQUAL(md.FormatNotes([1, 2, 3]).Count, 3);
+
+            UT_EQUAL(md.GetIntervalName(12), "8");
+            UT_EQUAL(md.GetIntervalName(13), "");
+            UT_EQUAL(md.GetIntervalName(25), "");
+            UT_EQUAL(md.NoteNumberToName(60), "C4");
+            UT_EQUAL(md.NoteNumberToName(75), "Eb5");
+            UT_EQUAL(md.NoteNumberToName(-1), "");
+            UT_EQUAL(md.NoteNumberToName(145), "Db11");
+            UT_EQUAL(md.GetCompound("MelodicMinorAscending").Count, 7);
+            UT_EQUAL(md.GetCompound("7#9").Count, 5);
+            UT_EQUAL(md.GetCompound("my_scale").Count, 0);
+            md.AddCompound("my_scale", "#2 b4 5 #9 13");
+            UT_EQUAL(md.GetCompound("my_scale").Count, 5);
+        }
     }
 }
