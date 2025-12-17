@@ -301,55 +301,6 @@ namespace Ephemera.MusicLib
 
         ///////////////////////////////////// TODO1 /////////////////////////////////////////
 
-
-
-
-        // static readonly string[] _chordDefs = [];
-
-        // static readonly string[] _scaleDefs = [];
-
-        // static readonly List<string> _noteNames = [];
-
-        // static readonly List<string> _intervals = [];
-
-        // /// <summary>Helpers.</summary>
-        // static readonly List<int> _naturals = [ 0, 2, 4, 5, 7, 9, 11 ]; //TODO1 ?
-
-
-
-// [chords]
-// ;Chord   Notes            | Description
-// M     = 1 3 5             | Named after the major 3rd interval between root and 3.
-// ...
-// sus2  = 1 2 5             | Sometimes considered as an inverted sus4 (GCD).
-// 5     = 1 5               | Power chord.
-
-// [scales]
-// ; Scale                   Notes                       | Description                              | Lower tetrachord  | Upper tetrachord
-// Acoustic               = 1 2 3 #4 5 6 b7              | Acoustic scale                           | whole tone        | minor
-// ...
-// WholeTone              = 1 2 3 #4 #5 #6               | Whole tone scale                         |                   |
-// Yo                     = 1 b3 4 5 b7                  | Yo scale                                 |                   
-
-// [notes]
-// C  = 0
-// Db = 1
-// ...
-// 10 = 9
-// 11 = 10
-// 12 = 11
-// 
-
-// [intervals]
-// 1  = 0
-// #1 = 1
-// ...
-// #11 = 18
-// 13 = 21
-
-
-
-
         /// <summary>
         /// Make content from the definitions.
         /// </summary>
@@ -362,41 +313,35 @@ namespace Ephemera.MusicLib
 
             List<string> ls = []; // TODO1 order these - alpha or int key
 
-    //; Scale = Notes                       ,Description                          ,Lower tetrachord, Upper tetrachord
-    //Acoustic = 1 2 3 #4 5 6 b7             ,Acoustic                             ,whole tone      ,minor           
-
-
-
             ls.Add("# Builtin Scales");
-            ls.Add("Scale   | Notes             | Description       | Lower tetrachord  | Upper tetrachord");
-            ls.Add("------- | ----------------- | ----------------- | ----------------  | ----------------");
+            ls.Add("|Scale   | Notes             | Description       | Lower tetrachord  | Upper tetrachord|");
+            ls.Add("|------- | ----------------- | ----------------- | ----------------  | ----------------|");
             ir.Contents["scales"].Values.ForEach(kv =>
             {
                 var parts = kv.Value.SplitByToken(",");
                 var rhs = string.Join("|", parts);
-                ls.Add( $"{kv.Key}|{rhs}");
+                ls.Add($"|{kv.Key}|{rhs}|");
             });
 
             ls.Add("# Builtin Chords");
-            ls.Add("Chord   | Notes             | Description");
-            ls.Add("------- | ----------------- | -----------");
+            ls.Add("|Chord   | Notes             | Description|");
+            ls.Add("|------- | ----------------- | -----------|");
             ir.Contents["chords"].Values.ForEach(kv =>
             {
                 var parts = kv.Value.SplitByToken(",");
                 var rhs = string.Join("|", parts);
-                ls.Add($"{kv.Key}|{rhs}");
+                ls.Add($"|{kv.Key}|{rhs}|");
             });
 
-
             ls.Add("# Supported Notes");
-            ls.Add("Note");
-            ls.Add("---- ");
-            ir.Contents["notes"].Values.ForEach(kv => { ls.Add($"{kv.Key}"); });
+            ls.Add("|Note|");
+            ls.Add("|---- |");
+            ir.Contents["notes"].Values.ForEach(kv => { ls.Add($"|{kv.Key}|"); });
 
             ls.Add("# Supported Intervals");
-            ls.Add("Interval");
-            ls.Add("------- ");
-            ir.Contents["intervals"].Values.ForEach(kv => { ls.Add($"{kv.Key}"); });
+            ls.Add("Interval|");
+            ls.Add("------- |");
+            ir.Contents["intervals"].Values.ForEach(kv => { ls.Add($"|{kv.Key}|"); });
 
             return string.Join(Environment.NewLine, ls);
         }
@@ -415,35 +360,46 @@ namespace Ephemera.MusicLib
 
             ls.Add("local M = {}");
             ls.Add("M.NOTES_PER_OCTAVE = 12");
-            ls.Add("M.MIDDLE_C4 = 60");
-            ls.Add("M.DEFAULT_OCTAVE = 4 -- middle ");
+            ls.Add("M.MIDDLE_C = 60");
+            ls.Add("M.DEFAULT_OCTAVE = 4");
 
-            ls.Add("--- All the builtin chord defs.");
-            ls.Add("local chords =");
-            ls.Add("{");
-            ls.Add("--  Chord   | Notes      | Description");
-            ir.Contents["chords"].Values.ForEach(kv => ls.Add($"{kv.Key} = {kv.Value},"));
-            ls.Add("}");
-
-            ls.Add("--- All the builtin scale defs.");
+            ls.Add("");
+            ls.Add("-- All the builtin scale defs.");
             ls.Add("local scales =");
             ls.Add("{");
-            ls.Add("--  Scale            | Notes             | Description        | Lower tetrachord  | Upper tetrachord");
-            ir.Contents["scales"].Values.ForEach(kv => ls.Add($"{kv.Key} = {kv.Value},"));
+            ir.Contents["scales"].Values.ForEach(kv =>
+            {
+                var parts = kv.Value.SplitByToken(",");
+                ls.Add($"    {kv.Key} = '{parts[0]}',");
+            });
             ls.Add("}");
 
-            ls.Add("--- All possible note names and aliases as offset from middle C.");
+            ls.Add("");
+            ls.Add("-- All the builtin chord defs.");
+            ls.Add("local chords =");
+            ls.Add("{");
+            ir.Contents["chords"].Values.ForEach(kv =>
+            {
+                var parts = kv.Value.SplitByToken(",");
+                ls.Add($"    ['{kv.Key}'] = '{parts[0]}',");
+            });
+            ls.Add("}");
+
+            ls.Add("");
+            ls.Add("-- All possible note names and aliases as offset from middle C.");
             ls.Add("local notes =");
             ls.Add("{");
-            ir.Contents["notes"].Values.ForEach(kv => ls.Add($"['{kv.Key}'] = {kv.Value},"));
+            ir.Contents["notes"].Values.ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
             ls.Add("}");
 
-            ls.Add("--- Intervals as used in chord and scale defs.");
+            ls.Add("");
+            ls.Add("-- Intervals as used in chord and scale defs.");
             ls.Add("local intervals =");
             ls.Add("{");
-            ir.Contents["intervals"].Values.ForEach(kv => ls.Add($"['{kv.Key}'] = {kv.Value},"));
+            ir.Contents["intervals"].Values.ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
             ls.Add("}");
 
+            ls.Add("");
             ls.Add("return M");
 
             return string.Join(Environment.NewLine, ls);

@@ -111,11 +111,13 @@ namespace Ephemera.MusicLib.Test
 
             Tell(INFO, $">>>>> Gen Markdown.");
             var smd = MusicDefs.GenMarkdown(fn);
-            Tell(INFO, $"Markdown:{smd.Left(400)}");
+            File.WriteAllText(@"C:\Dev\Libs\MusicLib\Test\musicdefs.md", smd);
+            // Tell(INFO, $"Markdown:{smd.Left(400)}");
 
             Tell(INFO, $">>>>> Gen Lua.");
             var sld = MusicDefs.GenLua(fn);
-            Tell(INFO, $"Lua:{sld.Left(400)}");
+            File.WriteAllText(@"C:\Dev\Libs\MusicLib\Test\musicdefs.lua", sld);
+            // Tell(INFO, $"Lua:{sld.Left(400)}");
         }
 
         #region Misc internals
