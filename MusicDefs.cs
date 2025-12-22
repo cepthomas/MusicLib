@@ -36,7 +36,7 @@ namespace Ephemera.MusicLib
         /// <summary>Helpers.</summary>
         readonly Dictionary<string, int> _intervals = [];
 
-        /// <summary>Black and white. TODO2 put in ini file.</summary>
+        /// <summary>Black and white. TODO put in ini file.</summary>
         readonly List<int> _naturals = [ 0, 2, 4, 5, 7, 9, 11 ];
 
         /// <summary>The combined chord/scale note definitions. Scripts can add customs.

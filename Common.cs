@@ -19,16 +19,14 @@ namespace Ephemera.MusicLib
     /// <summary>User selection options.</summary>
     public enum SnapType { Bar, Beat, Sub }
 
+    //public class Defs
+    //{
+    //    /// <summary>Default value.</summary>
+    //    public const double DEFAULT_VOLUME = 0.8;
 
-
-    public class Defs
-    {
-        ///// <summary>Default value.</summary>
-        //public const double DEFAULT_VOLUME = 0.8;
-
-        ///// <summary>Allow UI controls some more headroom.</summary>
-        //public const double MAX_VOLUME = 2.0;
-    }
+    //    /// <summary>Allow UI controls some more headroom.</summary>
+    //    public const double MAX_VOLUME = 2.0;
+    //}
 
     public class MidiSettings
     {
@@ -59,8 +57,5 @@ namespace Ephemera.MusicLib
         [Browsable(false)]
         [JsonIgnore()]
         public int SubsPerBar { get { return InternalPPQ * BeatsPerBar; } }
-
     }
-
-
 }
