@@ -33,6 +33,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="MusicDefs_1.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="music_defs_1.ini" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     </ItemGroup>
 

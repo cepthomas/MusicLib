@@ -89,18 +89,15 @@ namespace Ephemera.MusicLib.Test
         #endregion
 
         #region Start here
-        void One_Click(object sender, EventArgs e)
+        void Go_Click(object sender, EventArgs e)
         {
-            Tell(INFO, $">>>>> One.");
+            Tell(INFO, $">>>>> Go start.");
 
             //TestDefFile();
 
             //TestMusicDefs();
-        }
 
-        void Two_Click(object sender, EventArgs e)
-        {
-            Tell(INFO, $">>>>> Two.");
+            Tell(INFO, $">>>>> Go end.");
         }
         #endregion
 
@@ -111,9 +108,12 @@ namespace Ephemera.MusicLib.Test
             Tell(INFO, $">>>>> Low level loading.");
             string fn = Path.Combine(AppContext.BaseDirectory, "music_defs.ini");
 
+            var defs = Properties.Resources.gm_defs;
+
             // key is section name, value is line
             Dictionary<string, List<string>> res = [];
-            var ir = new IniReader(fn);
+            var ir = new IniReader();
+            ir.DoStrings(defs);
 
             ir.Contents.ForEach(ic =>
             {
@@ -122,21 +122,15 @@ namespace Ephemera.MusicLib.Test
 
             Tell(INFO, $">>>>> Gen Markdown.");
             var smd = MusicDefs.Instance.GenMarkdown(fn);
-            File.WriteAllText(Path.Join(_outPath, "musicdefs.md"), smd);
+            File.WriteAllText(Path.Join(_outPath, "music_defs.md"), smd);
 
             Tell(INFO, $">>>>> Gen Lua.");
             var sld = MusicDefs.Instance.GenLua(fn);
-            File.WriteAllText(Path.Join(_outPath, "musicdefs.lua"), sld);
+            File.WriteAllText(Path.Join(_outPath, "music_defs.lua"), sld);
         }
 
 
-        // //-------------------------------------------------------------------------------//
-        // /// <summary>Test note functions.</summary>
-        // void TestMusicDefs()
-        // {
-        // }
-
-        #region Misc internals
+        #region Internals
         /// <summary>Tell me something good.</summary>
         /// <param name="s">What</param>
         void Tell(string cat, string s, [CallerFilePath] string file = "", [CallerLineNumber] int line = -1)
@@ -145,33 +139,6 @@ namespace Ephemera.MusicLib.Test
             txtViewer.AppendLine($"{cat} {fn}({line}) {s}");
         }
         #endregion
-    }
-
-    //-------------------------------------------------------------------------------//
-    public class MUSICLIB_FILE : TestSuite
-    {
-        public override void RunSuite()
-        {
-            // Tell(INFO, $">>>>> Low level loading.");
-            string fn = Path.Combine(AppContext.BaseDirectory, "music_defs.ini");
-
-            // key is section name, value is line
-            Dictionary<string, List<string>> res = [];
-            var ir = new IniReader(fn);
-
-            // ir.Contents.ForEach(ic =>
-            // {
-            //     Tell(INFO, $"section:{ic.Key} => {ic.Value.Values.Count}");
-            // });
-
-            // Tell(INFO, $">>>>> Gen Markdown.");
-            var smd = MusicDefs.Instance.GenMarkdown(fn);
-            //File.WriteAllText(Path.Join(_outPath, "musicdefs.md"), smd);
-
-            // Tell(INFO, $">>>>> Gen Lua.");
-            var sld = MusicDefs.Instance.GenLua(fn);
-            //File.WriteAllText(Path.Join(_outPath, "musicdefs.lua"), sld);
-        }
     }
 
     //-------------------------------------------------------------------------------//

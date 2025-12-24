@@ -22,30 +22,19 @@ namespace Ephemera.MusicLib.Test
         {
             components = new System.ComponentModel.Container();
             toolTip1 = new System.Windows.Forms.ToolTip(components);
-            btnOne = new System.Windows.Forms.Button();
-            btnTwo = new System.Windows.Forms.Button();
+            btnGo = new System.Windows.Forms.Button();
             txtViewer = new Ephemera.NBagOfUis.TextViewer();
             SuspendLayout();
             // 
-            // btnOne
+            // btnGo
             // 
-            btnOne.Location = new Point(228, 29);
-            btnOne.Name = "btnOne";
-            btnOne.Size = new Size(86, 48);
-            btnOne.TabIndex = 0;
-            btnOne.Text = "1";
-            btnOne.UseVisualStyleBackColor = true;
-            btnOne.Click += One_Click;
-            // 
-            // btnTwo
-            // 
-            btnTwo.Location = new Point(334, 29);
-            btnTwo.Name = "btnTwo";
-            btnTwo.Size = new Size(86, 48);
-            btnTwo.TabIndex = 1;
-            btnTwo.Text = "2";
-            btnTwo.UseVisualStyleBackColor = true;
-            btnTwo.Click += Two_Click;
+            btnGo.Location = new Point(228, 29);
+            btnGo.Name = "btnGo";
+            btnGo.Size = new Size(86, 48);
+            btnGo.TabIndex = 0;
+            btnGo.Text = "Go Go Go";
+            btnGo.UseVisualStyleBackColor = true;
+            btnGo.Click += Go_Click;
             // 
             // txtViewer
             // 
@@ -64,8 +53,7 @@ namespace Ephemera.MusicLib.Test
             // 
             ClientSize = new Size(836, 499);
             Controls.Add(txtViewer);
-            Controls.Add(btnTwo);
-            Controls.Add(btnOne);
+            Controls.Add(btnGo);
             Name = "MainForm";
             Text = "Form1";
             ResumeLayout(false);
@@ -75,8 +63,7 @@ namespace Ephemera.MusicLib.Test
         #endregion
 
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Button btnOne;
-        private System.Windows.Forms.Button btnTwo;
+        private System.Windows.Forms.Button btnGo;
         private NBagOfUis.TextViewer txtViewer;
     }
 }
