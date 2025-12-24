@@ -106,18 +106,15 @@ namespace Ephemera.MusicLib.Test
         void TestDefFile()
         {
             Tell(INFO, $">>>>> Low level loading.");
-            string fn = Path.Combine(AppContext.BaseDirectory, "music_defs.ini");
 
-            var defs = Properties.Resources.gm_defs;
-
-            // key is section name, value is line
-            Dictionary<string, List<string>> res = [];
+            var myPath = MiscUtils.GetSourcePath();
+            string fn = Path.Combine(myPath, "..", "music_defs.ini");
             var ir = new IniReader();
-            ir.DoStrings(defs);
+            ir.ParseFile(fn);
 
-            ir.Contents.ForEach(ic =>
+            ir.GetSectionNames().ForEach(name =>
             {
-                Tell(INFO, $"section:{ic.Key} => {ic.Value.Values.Count}");
+                Tell(INFO, $"section:{name} => {ir.GetValues(name).Count}");
             });
 
             Tell(INFO, $">>>>> Gen Markdown.");

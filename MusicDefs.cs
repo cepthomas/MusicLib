@@ -53,33 +53,31 @@ namespace Ephemera.MusicLib
         /// </summary>
         MusicDefs()
         {
-            var defs = Properties.Resources.gm_defs;
-
             var ir = new IniReader();
-            ir.DoStrings(defs);
+            ir.ParseString(Properties.Resources.music_defs);
 
-            ir.GetValues("scales")!.ForEach(kv =>
+            ir.GetValues("scales").ForEach(kv =>
             {
                 var parts = kv.Value.SplitByTokens("(),");
                 _scales[kv.Key] = parts[0];
                 _compounds[kv.Key] = parts[0].SplitByToken(" ");
             });
 
-            ir.GetValues("chords")!.ForEach(kv =>
+            ir.GetValues("chords").ForEach(kv =>
             {
                 var parts = kv.Value.SplitByTokens("(),");
                 _chords[kv.Key] = parts[0];
                 _compounds[kv.Key] = parts[0].SplitByToken(" ");
             });
 
-            ir.GetValues("notes")!.ForEach(kv => 
+            ir.GetValues("notes").ForEach(kv => 
             {
                 //Db = 1
                 // ls.Add($"    ['{kv.Key}'] = {kv.Value},");
                 _notes[kv.Key] = int.Parse(kv.Value);
             });
 
-            ir.GetValues("intervals")!.ForEach(kv =>
+            ir.GetValues("intervals").ForEach(kv =>
             {
                 //#1 = 1
                 // ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
@@ -298,19 +296,15 @@ namespace Ephemera.MusicLib
         /// <returns>Content.</returns>
         public string GenMarkdown(string fn)
         {
-            var defs = Properties.Resources.gm_defs;
-
-            // key is section name, value is line
-            Dictionary<string, List<string>> res = [];
             var ir = new IniReader();
-            ir.DoStrings(defs);
+            ir.ParseString(Properties.Resources.music_defs);
 
             List<string> ls = [];
 
             ls.Add("# Builtin Scales");
             ls.Add("|Scale   | Notes             | Description       | Lower tetrachord  | Upper tetrachord|");
             ls.Add("|------- | ----------------- | ----------------- | ----------------  | ----------------|");
-            ir.GetValues("scales")!.ForEach(kv =>
+            ir.GetValues("scales").ForEach(kv =>
             {
                 // k: Acoustic  v: 1 2 3 #4 5 6 b7 (Acoustic,whole tone,minor)
                 var parts = kv.Value.SplitByTokens("(),");
@@ -324,7 +318,7 @@ namespace Ephemera.MusicLib
             ls.Add("# Builtin Chords");
             ls.Add("|Chord   | Notes             | Description|");
             ls.Add("|------- | ----------------- | -----------|");
-            ir.GetValues("chords")!.ForEach(kv =>
+            ir.GetValues("chords").ForEach(kv =>
             {
                 var parts = kv.Value.SplitByTokens("(),");
                 var rhs = string.Join("|", parts);
@@ -333,15 +327,15 @@ namespace Ephemera.MusicLib
             ls.Add("");
 
             ls.Add("# Supported Notes");
-            ls.Add("|Name|Offset|");
-            ls.Add("|--- |----- |");
-            ir.GetValues("notes")!.ForEach(kv => { ls.Add($"|{kv.Key}|{kv.Value}|"); });
+            ls.Add("|Name |Offset |");
+            ls.Add("|---  |-----  |");
+            ir.GetValues("notes").ForEach(kv => { ls.Add($"|{kv.Key}|{kv.Value}|"); });
             ls.Add("");
 
             ls.Add("# Supported Intervals");
-            ls.Add("|Name|Offset|");
-            ls.Add("|--- |----- |");
-            ir.GetValues("intervals")!.ForEach(kv => { ls.Add($"|{kv.Key}|{kv.Value}|"); });
+            ls.Add("|Name |Offset |");
+            ls.Add("|---  |-----  |");
+            ir.GetValues("intervals").ForEach(kv => { ls.Add($"|{kv.Key}|{kv.Value}|"); });
             ls.Add("");
 
             return string.Join(Environment.NewLine, ls);
@@ -353,12 +347,8 @@ namespace Ephemera.MusicLib
         /// <returns>Content.</returns>
         public string GenLua(string fn)
         {
-            var defs = Properties.Resources.gm_defs;
-
-            // key is section name, value is line
-            Dictionary<string, List<string>> res = [];
             var ir = new IniReader();
-            ir.DoStrings(defs);
+            ir.ParseString(Properties.Resources.music_defs);
 
             List<string> ls = [];
 
@@ -372,7 +362,7 @@ namespace Ephemera.MusicLib
             ls.Add("-- All the builtin scale defs.");
             ls.Add("local scales =");
             ls.Add("{");
-            ir.GetValues("scales")!.ForEach(kv =>
+            ir.GetValues("scales").ForEach(kv =>
             {
                 // k: Acoustic  v: 1 2 3 #4 5 6 b7 (Acoustic,whole tone,minor)
                 var parts = kv.Value.SplitByTokens("(),");
@@ -385,7 +375,7 @@ namespace Ephemera.MusicLib
             ls.Add("-- All the builtin chord defs.");
             ls.Add("local chords =");
             ls.Add("{");
-            ir.GetValues("chords")!.ForEach(kv =>
+            ir.GetValues("chords").ForEach(kv =>
             {
                 var parts = kv.Value.SplitByTokens("(),");
                 ls.Add($"    ['{kv.Key}'] = '{parts[0]}',");
@@ -396,14 +386,14 @@ namespace Ephemera.MusicLib
             ls.Add("-- All possible note names and aliases as offset from middle C.");
             ls.Add("local notes =");
             ls.Add("{");
-            ir.GetValues("notes")!.ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
+            ir.GetValues("notes").ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
             ls.Add("}");
 
             ls.Add("");
             ls.Add("-- Intervals as used in chord and scale defs.");
             ls.Add("local intervals =");
             ls.Add("{");
-            ir.GetValues("intervals")!.ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
+            ir.GetValues("intervals").ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
             ls.Add("}");
 
             ls.Add("");
