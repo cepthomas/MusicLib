@@ -22,7 +22,7 @@ using Ephemera.NBagOfTricks.PNUT;
 
 namespace Ephemera.MusicLib.Test
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form //TODO1 should be cli/pnut
     {
         #region Fields - app
         const string ERROR = "ERR";
@@ -171,6 +171,23 @@ namespace Ephemera.MusicLib.Test
             UT_EQUAL(md.GetCompound("my_scale").Count, 0);
             md.AddCompound("my_scale", "#2 b4 5 #9 13");
             UT_EQUAL(md.GetCompound("my_scale").Count, 5);
+
+
+            int bt = MusicTime.Parse("23.2.6");
+            UT_EQUAL(bt, 23 * MusicTime.SUBS_PER_BAR + 2 * MusicTime.SUBS_PER_BEAT + 6);
+            bt = MusicTime.Parse("146.1");
+            UT_EQUAL(bt, 146 * MusicTime.SUBS_PER_BAR + 1 * MusicTime.SUBS_PER_BEAT);
+            bt = MusicTime.Parse("71");
+            UT_EQUAL(bt, 71 * MusicTime.SUBS_PER_BAR);
+            bt = MusicTime.Parse("49.55.8");
+            UT_EQUAL(bt, -1);
+            bt = MusicTime.Parse("111.3.88");
+            UT_EQUAL(bt, -1);
+            bt = MusicTime.Parse("invalid");
+            UT_EQUAL(bt, -1);
+            string sbt = MusicTime.Format(12345);
+            UT_EQUAL(sbt, "385.3.1");
+            
         }
     }
 }
