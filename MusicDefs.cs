@@ -15,11 +15,8 @@ namespace Ephemera.MusicLib
     /// <summary>Definitions for use inside scripts. For doc see MusicDefinitions.md.</summary>
     public class MusicDefs
     {
-        #region Global collection
-        /// <summary>The singleton instance.</summary>
+        #region Singleton
         public static MusicDefs Instance { get { _instance ??= new MusicDefs(); return _instance; } }
-
-        /// <summary>The singleton instance.</summary>
         static MusicDefs? _instance;
         #endregion
 
@@ -289,12 +286,14 @@ namespace Ephemera.MusicLib
             //throw new ArgumentException($"Invalid chord or scale: {name}");
             return ret;
         }
+        #endregion
 
+        #region Utilities
         /// <summary>
         /// Make content from the definitions.
         /// </summary>
         /// <returns>Content.</returns>
-        public string GenMarkdown(string fn)
+        public List<string> GenMarkdown()
         {
             var ir = new IniReader();
             ir.ParseString(Properties.Resources.music_defs);
@@ -338,14 +337,14 @@ namespace Ephemera.MusicLib
             ir.GetValues("intervals").ForEach(kv => { ls.Add($"|{kv.Key}|{kv.Value}|"); });
             ls.Add("");
 
-            return string.Join(Environment.NewLine, ls);
+            return ls;
         }
 
         /// <summary>
         /// Make content from the definitions.
         /// </summary>
         /// <returns>Content.</returns>
-        public string GenLua(string fn)
+        public List<string> GenLua(string fn)
         {
             var ir = new IniReader();
             ir.ParseString(Properties.Resources.music_defs);
@@ -399,7 +398,7 @@ namespace Ephemera.MusicLib
             ls.Add("");
             ls.Add("return M");
 
-            return string.Join(Environment.NewLine, ls);
+            return ls;
         }
         #endregion
     }
