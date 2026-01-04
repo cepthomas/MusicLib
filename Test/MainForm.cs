@@ -118,11 +118,11 @@ namespace Ephemera.MusicLib.Test
             });
 
             Tell(INFO, $">>>>> Gen Markdown.");
-            var smd = MusicDefs.Instance.GenMarkdown(fn);
+            var smd = MusicDefs.GenMarkdown(fn);
             File.WriteAllText(Path.Join(_outPath, "music_defs.md"), smd);
 
             Tell(INFO, $">>>>> Gen Lua.");
-            var sld = MusicDefs.Instance.GenLua(fn);
+            var sld = MusicDefs.GenLua(fn);
             File.WriteAllText(Path.Join(_outPath, "music_defs.lua"), sld);
         }
 
