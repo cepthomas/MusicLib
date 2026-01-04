@@ -15,30 +15,30 @@ namespace Ephemera.MusicLib
     /// <summary>Definitions for use inside scripts. For doc see MusicDefinitions.md.</summary>
     public class MusicDefs
     {
-        #region Singleton
-        public static MusicDefs Instance { get { _instance ??= new MusicDefs(); return _instance; } }
-        static MusicDefs? _instance;
-        #endregion
+        //#region Singleton
+        //public static MusicDefs Instance { get { _instance ??= new MusicDefs(); return _instance; } }
+        //static MusicDefs? _instance;
+        //#endregion
 
         #region Fields
         /// <summary>All the builtin scale defs.</summary>
-        readonly Dictionary<string, string> _scales = [];
+        static readonly Dictionary<string, string> _scales = [];
 
         /// <summary>All the builtin chord defs.</summary>
-        readonly Dictionary<string, string> _chords = [];
+        static readonly Dictionary<string, string> _chords = [];
 
         /// <summary>All possible note names and aliases.</summary>
-        readonly Dictionary<string, int> _notes = [];
+        static readonly Dictionary<string, int> _notes = [];
 
         /// <summary>Helpers.</summary>
-        readonly Dictionary<string, int> _intervals = [];
+        static readonly Dictionary<string, int> _intervals = [];
 
         /// <summary>Black and white. TODO put in ini file.</summary>
-        readonly List<int> _naturals = [ 0, 2, 4, 5, 7, 9, 11 ];
+        static readonly List<int> _naturals = [ 0, 2, 4, 5, 7, 9, 11 ];
 
         /// <summary>The combined chord/scale note definitions. Scripts can add customs.
         /// Key is chord/scale name, value is list of constituent notes.</summary>
-        readonly Dictionary<string, List<string>> _compounds = [];
+        static readonly Dictionary<string, List<string>> _compounds = [];
 
         /// <summary>TODO support other scales?</summary>
         const int NOTES_PER_OCTAVE = 12;
@@ -48,7 +48,7 @@ namespace Ephemera.MusicLib
         /// <summary>
         /// Load all the music definitions.
         /// </summary>
-        MusicDefs()
+        static MusicDefs()
         {
             var ir = new IniReader();
             ir.ParseString(Properties.Resources.music_defs);
@@ -90,7 +90,7 @@ namespace Ephemera.MusicLib
         /// <param name="inote">Note number</param>
         /// <param name="octave">Include octave</param>
         /// <returns>The note name or empty if invalid.</returns>
-        public string NoteNumberToName(int inote, bool octave = true)
+        public static string NoteNumberToName(int inote, bool octave = true)
         {
             var nname = "";
             var split = SplitNoteNumber(inote);
@@ -107,7 +107,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="noteString">Standard string to parse.</param>
         /// <returns>List of note numbers - empty if invalid.</returns>
-        public List<int> GetNotesFromString(string noteString)
+        public static List<int> GetNotesFromString(string noteString)
         {
             List<int> notes = [];
 
@@ -193,7 +193,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="notenum">Which note</param>
         /// <returns>True/false</returns>
-        public bool IsNatural(int notenum)
+        public static bool IsNatural(int notenum)
         {
             return _naturals.Contains(SplitNoteNumber(notenum).root % NOTES_PER_OCTAVE);
         }
@@ -203,7 +203,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="notenum">Absolute note number</param>
         /// <returns>tuple of root and octave</returns>
-        (int root, int octave) SplitNoteNumber(int notenum)
+        static (int root, int octave) SplitNoteNumber(int notenum)
         {
             int root = notenum % NOTES_PER_OCTAVE;
             int octave = (notenum / NOTES_PER_OCTAVE) - 1;
@@ -215,7 +215,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="sinterval"></param>
         /// <returns>Offset or -1 if invalid.</returns>
-        public int GetInterval(string sinterval)
+        public static int GetInterval(string sinterval)
         {
             int flats = sinterval.Count(c => c == 'b');
             int sharps = sinterval.Count(c => c == '#');
@@ -235,7 +235,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="iint">The name or empty if invalid.</param>
         /// <returns></returns>
-        public string GetIntervalName(int iint)
+        public static string GetIntervalName(int iint)
         {
             var sint = _intervals.Where(kv => kv.Value == iint);
             return sint.Any() ? sint.First().Key : "";
@@ -246,7 +246,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="notes"></param>
         /// <returns></returns>
-        public List<string> FormatNotes(List<int> notes)
+        public static List<string> FormatNotes(List<int> notes)
         {
             List<string> snotes = [];
 
@@ -266,7 +266,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="name">which</param>
         /// <param name="notes">what</param>
-        public void AddCompound(string name, string notes)
+        public static void AddCompound(string name, string notes)
         {
             _compounds[name] = notes.SplitByToken(" ");
         }
@@ -276,7 +276,7 @@ namespace Ephemera.MusicLib
         /// </summary>
         /// <param name="name">which</param>
         /// <returns>The list of notes or empty if invalid.</returns>
-        public List<string> GetCompound(string name)
+        public static List<string> GetCompound(string name)
         {
             List<string> ret = [];
             if(_compounds.TryGetValue(name, out List<string>? value))
@@ -293,7 +293,7 @@ namespace Ephemera.MusicLib
         /// Make content from the definitions.
         /// </summary>
         /// <returns>Content.</returns>
-        public List<string> GenMarkdown()
+        public static List<string> GenMarkdown()
         {
             var ir = new IniReader();
             ir.ParseString(Properties.Resources.music_defs);
@@ -344,7 +344,7 @@ namespace Ephemera.MusicLib
         /// Make content from the definitions.
         /// </summary>
         /// <returns>Content.</returns>
-        public List<string> GenLua(string fn)
+        public static List<string> GenLua(string fn)
         {
             var ir = new IniReader();
             ir.ParseString(Properties.Resources.music_defs);
