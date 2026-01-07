@@ -18,7 +18,7 @@ namespace Ephemera.MusicLib.Test
         {
             bool ui = true;
 
-            if  (ui)
+            if (ui)
             {
                 Application.SetHighDpiMode(HighDpiMode.SystemAware);
                 Application.EnableVisualStyles();
