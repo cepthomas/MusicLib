@@ -15,11 +15,6 @@ namespace Ephemera.MusicLib
     /// <summary>Definitions for use inside scripts. For doc see MusicDefinitions.md.</summary>
     public class MusicDefs
     {
-        //#region Singleton
-        //public static MusicDefs Instance { get { _instance ??= new MusicDefs(); return _instance; } }
-        //static MusicDefs? _instance;
-        //#endregion
-
         #region Fields
         /// <summary>All the builtin scale defs.</summary>
         static readonly Dictionary<string, string> _scales = [];
