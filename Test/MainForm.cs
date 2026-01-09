@@ -117,12 +117,12 @@ namespace Ephemera.MusicLib.Test
             });
 
             Tell(INFO, $">>>>> Gen Markdown.");
-            var smd = MusicDefs.GenMarkdown(fn);
-            File.WriteAllText(Path.Join(_outPath, "music_defs.md"), smd);
+            var sMusicDefs = MusicDefs.GenMarkdown();
+            File.WriteAllText(Path.Join(_outPath, "music_defs.MusicDefs"), string.Join(Environment.NewLine, sMusicDefs));
 
             Tell(INFO, $">>>>> Gen Lua.");
-            var sld = MusicDefs.GenLua(fn);
-            File.WriteAllText(Path.Join(_outPath, "music_defs.lua"), sld);
+            var sld = MusicDefs.GenLua();
+            File.WriteAllText(Path.Join(_outPath, "music_defs.lua"), string.Join(Environment.NewLine, sld));
         }
 
 
@@ -142,34 +142,32 @@ namespace Ephemera.MusicLib.Test
     {
         public override void RunSuite()
         {
-            var md = MusicDefs.Instance;
-
             //List<int> notes = [1, 2, 3];
-            UT_FALSE(md.IsNatural(3));
-            UT_TRUE(md.IsNatural(4));
-            UT_TRUE(md.IsNatural(5));
-            UT_FALSE(md.IsNatural(-1));
-            UT_TRUE(md.IsNatural(333));
-            UT_EQUAL(md.GetInterval("2"), 2);
-            UT_EQUAL(md.GetInterval("b5"), 6);
-            UT_EQUAL(md.GetInterval("#11"), 18);
-            UT_EQUAL(md.GetInterval("xxx"), -1);
-            UT_EQUAL(md.GetNotesFromString("Db.7#9").Count, 5);
-            UT_EQUAL(md.GetNotesFromString("booga").Count, 0);
-            UT_EQUAL(md.FormatNotes([1, 2, 3]).Count, 3);
+            UT_FALSE(MusicDefs.IsNatural(3));
+            UT_TRUE(MusicDefs.IsNatural(4));
+            UT_TRUE(MusicDefs.IsNatural(5));
+            UT_FALSE(MusicDefs.IsNatural(-1));
+            UT_TRUE(MusicDefs.IsNatural(333));
+            UT_EQUAL(MusicDefs.GetInterval("2"), 2);
+            UT_EQUAL(MusicDefs.GetInterval("b5"), 6);
+            UT_EQUAL(MusicDefs.GetInterval("#11"), 18);
+            UT_EQUAL(MusicDefs.GetInterval("xxx"), -1);
+            UT_EQUAL(MusicDefs.GetNotesFromString("Db.7#9").Count, 5);
+            UT_EQUAL(MusicDefs.GetNotesFromString("booga").Count, 0);
+            UT_EQUAL(MusicDefs.FormatNotes([1, 2, 3]).Count, 3);
 
-            UT_EQUAL(md.GetIntervalName(12), "8");
-            UT_EQUAL(md.GetIntervalName(13), "");
-            UT_EQUAL(md.GetIntervalName(25), "");
-            UT_EQUAL(md.NoteNumberToName(60), "C4");
-            UT_EQUAL(md.NoteNumberToName(75), "Eb5");
-            UT_EQUAL(md.NoteNumberToName(-1), "");
-            UT_EQUAL(md.NoteNumberToName(145), "Db11");
-            UT_EQUAL(md.GetCompound("MelodicMinorAscending").Count, 7);
-            UT_EQUAL(md.GetCompound("7#9").Count, 5);
-            UT_EQUAL(md.GetCompound("my_scale").Count, 0);
-            md.AddCompound("my_scale", "#2 b4 5 #9 13");
-            UT_EQUAL(md.GetCompound("my_scale").Count, 5);
+            UT_EQUAL(MusicDefs.GetIntervalName(12), "8");
+            UT_EQUAL(MusicDefs.GetIntervalName(13), "");
+            UT_EQUAL(MusicDefs.GetIntervalName(25), "");
+            UT_EQUAL(MusicDefs.NoteNumberToName(60), "C4");
+            UT_EQUAL(MusicDefs.NoteNumberToName(75), "Eb5");
+            UT_EQUAL(MusicDefs.NoteNumberToName(-1), "");
+            UT_EQUAL(MusicDefs.NoteNumberToName(145), "Db11");
+            UT_EQUAL(MusicDefs.GetCompound("MelodicMinorAscending").Count, 7);
+            UT_EQUAL(MusicDefs.GetCompound("7#9").Count, 5);
+            UT_EQUAL(MusicDefs.GetCompound("my_scale").Count, 0);
+            MusicDefs.AddCompound("my_scale", "#2 b4 5 #9 13");
+            UT_EQUAL(MusicDefs.GetCompound("my_scale").Count, 5);
         }
     }
 }

@@ -339,7 +339,7 @@ namespace Ephemera.MusicLib
         /// Make content from the definitions.
         /// </summary>
         /// <returns>Content.</returns>
-        public static List<string> GenLua(string fn)
+        public static List<string> GenLua()
         {
             var ir = new IniReader();
             ir.ParseString(Properties.Resources.music_defs);
