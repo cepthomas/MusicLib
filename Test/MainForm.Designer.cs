@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using Ephemera.NBagOfTricks;
-using Ephemera.NBagOfUis;
 
 
 namespace Ephemera.MusicLib.Test
@@ -23,7 +22,7 @@ namespace Ephemera.MusicLib.Test
             components = new System.ComponentModel.Container();
             toolTip1 = new System.Windows.Forms.ToolTip(components);
             btnGo = new System.Windows.Forms.Button();
-            txtViewer = new Ephemera.NBagOfUis.TextViewer();
+            txtViewer = new System.Windows.Forms.RichTextBox();
             SuspendLayout();
             // 
             // btnGo
@@ -43,8 +42,6 @@ namespace Ephemera.MusicLib.Test
             txtViewer.Size = new System.Drawing.Size(753, 242);
             txtViewer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             txtViewer.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            txtViewer.MaxText = 5000;
-            txtViewer.Prompt = "";
             txtViewer.TabIndex = 58;
             txtViewer.WordWrap = true;
             txtViewer.TabIndex = 2;
@@ -64,6 +61,6 @@ namespace Ephemera.MusicLib.Test
 
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnGo;
-        private NBagOfUis.TextViewer txtViewer;
+        private System.Windows.Forms.RichTextBox txtViewer;
     }
 }

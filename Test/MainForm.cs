@@ -15,7 +15,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using Ephemera.NBagOfTricks;
-using Ephemera.NBagOfUis;
 using Ephemera.NBagOfTricks.PNUT;
 
 
@@ -48,8 +47,6 @@ namespace Ephemera.MusicLib.Test
             // The text output.
             txtViewer.Font = new Font("Cascadia Code", 9);
             txtViewer.WordWrap = true;
-            txtViewer.MatchText.Add(ERROR, Color.LightPink);
-            txtViewer.MatchText.Add(WARN, Color.Plum);
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace Ephemera.MusicLib.Test
         void Tell(string cat, string s, [CallerFilePath] string file = "", [CallerLineNumber] int line = -1)
         {
             var fn = Path.GetFileName(file);
-            txtViewer.AppendLine($"{cat} {fn}({line}) {s}");
+            txtViewer.AppendText($"{cat} {fn}({line}) {s}{Environment.NewLine}");
         }
         #endregion
     }
