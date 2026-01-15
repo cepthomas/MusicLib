@@ -354,7 +354,7 @@ namespace Ephemera.MusicLib
 
             ls.Add("");
             ls.Add("-- All the builtin scale defs.");
-            ls.Add("local scales =");
+            ls.Add("M.scales =");
             ls.Add("{");
             ir.GetValues("scales").ForEach(kv =>
             {
@@ -367,7 +367,7 @@ namespace Ephemera.MusicLib
 
             ls.Add("");
             ls.Add("-- All the builtin chord defs.");
-            ls.Add("local chords =");
+            ls.Add("M.chords =");
             ls.Add("{");
             ir.GetValues("chords").ForEach(kv =>
             {
@@ -378,14 +378,14 @@ namespace Ephemera.MusicLib
 
             ls.Add("");
             ls.Add("-- All possible note names and aliases as offset from middle C.");
-            ls.Add("local notes =");
+            ls.Add("M.notes =");
             ls.Add("{");
             ir.GetValues("notes").ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
             ls.Add("}");
 
             ls.Add("");
             ls.Add("-- Intervals as used in chord and scale defs.");
-            ls.Add("local intervals =");
+            ls.Add("M.intervals =");
             ls.Add("{");
             ir.GetValues("intervals").ForEach(kv => ls.Add($"    ['{kv.Key}'] = {kv.Value},"));
             ls.Add("}");
