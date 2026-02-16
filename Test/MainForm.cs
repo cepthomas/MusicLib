@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,9 +10,7 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing.Design;
-using System.Windows.Forms.Design;
 using Ephemera.NBagOfTricks;
-using Ephemera.NBagOfTricks.PNUT;
 
 
 namespace Ephemera.MusicLib.Test
@@ -40,9 +35,7 @@ namespace Ephemera.MusicLib.Test
             InitializeComponent();
 
             // Make sure out path exists.
-            _outPath = Path.Join(MiscUtils.GetSourcePath(), "out");
-            DirectoryInfo di = new(_outPath);
-            di.Create();
+            _outPath = MiscUtils.GetSourcePath();
 
             // The text output.
             txtViewer.Font = new Font("Cascadia Code", 9);
@@ -132,39 +125,5 @@ namespace Ephemera.MusicLib.Test
             txtViewer.AppendText($"{cat} {fn}({line}) {s}{Environment.NewLine}");
         }
         #endregion
-    }
-
-    //-------------------------------------------------------------------------------//
-    public class MUSICLIB_API : TestSuite
-    {
-        public override void RunSuite()
-        {
-            //List<int> notes = [1, 2, 3];
-            UT_FALSE(MusicDefs.IsNatural(3));
-            UT_TRUE(MusicDefs.IsNatural(4));
-            UT_TRUE(MusicDefs.IsNatural(5));
-            UT_FALSE(MusicDefs.IsNatural(-1));
-            UT_TRUE(MusicDefs.IsNatural(333));
-            UT_EQUAL(MusicDefs.GetInterval("2"), 2);
-            UT_EQUAL(MusicDefs.GetInterval("b5"), 6);
-            UT_EQUAL(MusicDefs.GetInterval("#11"), 18);
-            UT_EQUAL(MusicDefs.GetInterval("xxx"), -1);
-            UT_EQUAL(MusicDefs.GetNotesFromString("Db.7#9").Count, 5);
-            UT_EQUAL(MusicDefs.GetNotesFromString("booga").Count, 0);
-            UT_EQUAL(MusicDefs.FormatNotes([1, 2, 3]).Count, 3);
-
-            UT_EQUAL(MusicDefs.GetIntervalName(12), "8");
-            UT_EQUAL(MusicDefs.GetIntervalName(13), "");
-            UT_EQUAL(MusicDefs.GetIntervalName(25), "");
-            UT_EQUAL(MusicDefs.NoteNumberToName(60), "C4");
-            UT_EQUAL(MusicDefs.NoteNumberToName(75), "Eb5");
-            UT_EQUAL(MusicDefs.NoteNumberToName(-1), "");
-            UT_EQUAL(MusicDefs.NoteNumberToName(145), "Db11");
-            UT_EQUAL(MusicDefs.GetCompound("MelodicMinorAscending").Count, 7);
-            UT_EQUAL(MusicDefs.GetCompound("7#9").Count, 5);
-            UT_EQUAL(MusicDefs.GetCompound("my_scale").Count, 0);
-            MusicDefs.AddCompound("my_scale", "#2 b4 5 #9 13");
-            UT_EQUAL(MusicDefs.GetCompound("my_scale").Count, 5);
-        }
     }
 }

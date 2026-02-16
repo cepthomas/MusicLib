@@ -29,9 +29,9 @@ namespace Ephemera.MusicLib.Test
             else
             {
                 TestRunner runner = new(OutputFormat.Readable);
-                var cases = new[] { "MUSICLIB_API" };
-                runner.RunSuites(cases);
-                File.WriteAllLines(Path.Join(MiscUtils.GetSourcePath(), "out", "test.txt"), runner.Context.OutputLines);
+                var torun = new[] { "MUSICLIB_API" };
+                runner.RunSuites(torun);
+                File.WriteAllLines(Path.Join(MiscUtils.GetSourcePath(), "test.txt"), runner.Context.OutputLines);
             }
         }
     }
