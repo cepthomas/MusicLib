@@ -35,7 +35,9 @@ namespace Ephemera.MusicLib.Test
             InitializeComponent();
 
             // Make sure out path exists.
-            _outPath = MiscUtils.GetSourcePath();
+            _outPath = Path.Combine(MiscUtils.GetSourcePath(), "out");
+            DirectoryInfo di = new(_outPath);
+            di.Create();
 
             // The text output.
             txtViewer.Font = new Font("Cascadia Code", 9);
