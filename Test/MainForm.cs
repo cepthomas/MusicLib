@@ -55,9 +55,6 @@ namespace Ephemera.MusicLib.Test
             }
             catch (Exception ex)
             {
-                // MidiLibException ex
-                // AppException ex
-
                 Tell(ERROR, ex.Message);
             }
 

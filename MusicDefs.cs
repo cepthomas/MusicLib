@@ -8,8 +8,6 @@ using System.Diagnostics;
 using Ephemera.NBagOfTricks;
 
 
-// was namespace Ephemera.NBagOfTricks MusicDefinitions.cs
-
 namespace Ephemera.MusicLib
 {
     /// <summary>Definitions for use inside scripts. For doc see MusicDefinitions.md.</summary>
