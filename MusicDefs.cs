@@ -26,14 +26,14 @@ namespace Ephemera.MusicLib
         /// <summary>Helpers.</summary>
         static readonly Dictionary<string, int> _intervals = [];
 
-        /// <summary>Black and white. TODO put in ini file.</summary>
+        /// <summary>Black and white. TODO2 put in ini file.</summary>
         static readonly List<int> _naturals = [ 0, 2, 4, 5, 7, 9, 11 ];
 
         /// <summary>The combined chord/scale note definitions. Scripts can add customs.
         /// Key is chord/scale name, value is list of constituent notes.</summary>
         static readonly Dictionary<string, List<string>> _compounds = [];
 
-        /// <summary>TODO support other scales?</summary>
+        /// <summary>TODO2 support other scales?</summary>
         const int NOTES_PER_OCTAVE = 12;
         #endregion
 
