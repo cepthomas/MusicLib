@@ -3,7 +3,7 @@
 General purpose music library. It translates between text versions of note/scale/chord and a representation
 suitable for use in the digital domain.
 
-Requires VS2022 and .NET8.
+Requires VS2026 and .NET10.
 
 # Nomenclature
 
